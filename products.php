@@ -148,7 +148,7 @@ if (isset($_GET['buy'])) {
                     if ($product_quantity[0] <= 0) {
                         echo "<a>Sold out</a>";
                     } else {
-                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[0] . "'>Buy</a>";
+                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[0] . "'>Buy1</a>";
                     }
                 } ?>
             </div>
