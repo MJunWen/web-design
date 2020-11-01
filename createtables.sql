@@ -8,7 +8,8 @@ create table products (
     product_img_path varchar(50) not null,
     product_name varchar(50) not null,
     product_price float(10,2) not null,
-    category varchar(50) not null
+    category varchar(50) not null,
+    quantity int unsigned
 );
 
  create table orders (

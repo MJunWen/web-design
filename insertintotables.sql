@@ -8,14 +8,16 @@ values (
     "img/keyboardone.JPG",
     "Lorem ipsum dolor sit amet Keyboard.",
     1.23,
-    "Keyboard"
+    "Keyboard",
+    10
   ),
   (
     2,
     "img/mouseone.JPG",
     "Lorem ipsum dolor sit amet Mouse.",
     4.56,
-    "Mouse"
+    "Mouse",
+    9
   ),
   
   (
@@ -23,14 +25,16 @@ values (
     "img/usbone.JPG",
     "Lorem ipsum dolor sit amet USB.",
     7.89,
-    "USB"
+    "USB",
+    8
   ),
   (
     4,
     "img/mobilephoneone.JPG",
     "Lorem ipsum dolor sit amet phone.",
     4.98,
-    "Mobile Phone"
+    "Mobile Phone",
+    7
   );
 /*insert into orders
 values (1, 2, 1.23),
