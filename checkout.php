@@ -44,6 +44,7 @@ if (isset($_GET['empty'])) {
     $product_name = array();
     $product_price = array();
     $product_id = array();
+    $product_quantity = array();
 
     for ($i = 0; $i < $result->num_rows; $i++) {
         $row = mysqli_fetch_assoc($result);
@@ -53,6 +54,7 @@ if (isset($_GET['empty'])) {
                 $product_src[] = $row['product_img_path'];
                 $product_name[] = $row['product_name'];
                 $product_price[] = $row['product_price'];
+                $product_quantity[] = $row['quantity'];
             }
         }
     }
@@ -70,14 +72,26 @@ if (isset($_GET['empty'])) {
         }
     }
 
+    $quantityarray = array_count_values($product_id); //cumulative quantity of item sold eg 4 => '5' , 1 => '3'
+    foreach($quantityarray as $x=>$x_value) {
+        $product_id_sold[] = $x; // Stores product id of all items sold in this array in ascending order
+        $product_id_quantity_sold[] = $x_value; // quantity of items sold based on product id
+    }
 
-    //select login.username, orders.orderid,orders.amount from login,orders where login.loginid=orders.loginid
-
+    //insert order into orders table
     for ($i = 0; $i < count($_SESSION['cart']); $i++) { //need loginid from session but session only has username
         $query = "INSERT into orders values 
         ('','" . $login_id . "','" . $product_id[$i] . "','" . $product_price[$i] . "') ";
-        $db->query($query);
+        $db->query($query); 
     }
+
+    //update quantity sold
+    for ($i = 0; $i < count($product_id_quantity_sold); $i++) { //need loginid from session but session only has username
+        $query = "UPDATE products set quantity = quantity - '".$product_id_quantity_sold[$i]."' where productid='".$product_id_sold[$i]."'"; //update quantity
+        $db->query($query); //update quantity from products table //cant do this way because each element in the array is the original value.
+    }
+
+
 
 
 

@@ -25,7 +25,7 @@ if (isset($_GET['buy'])) {
     /*Connect to DB */
     require_once('connection.php');
 
-    //If click on category, filter out stuff based on category. Else show default 3
+    //If click on category, filter out stuff based on category. Else show default 3 products
 
     if (isset($_GET['product'])) {
         $query = "SELECT * from products where category= '" . $_GET['product'] . "'";
@@ -35,6 +35,7 @@ if (isset($_GET['buy'])) {
         $product_src = array();
         $product_name = array();
         $product_price = array();
+        $product_quantity = array();
 
         for ($i = 0; $i < $result->num_rows; $i++) {
             $row = mysqli_fetch_assoc($result);
@@ -42,11 +43,12 @@ if (isset($_GET['buy'])) {
             $product_src[] = $row['product_img_path'];
             $product_name[] = $row['product_name'];
             $product_price[] = $row['product_price'];
+            $product_quantity[] = $row['quantity'];
             // ${"product_src_" .$i} = $row['product_img_path']; //variable varaibles work but online say not reccommended to use it so use array instead
             // ${"product_name_" .$i} = $row['product_name'];
             // ${"product_price_" .$i} = $row['product_price'];
         }
-    } else {
+    } else { //If click on category, filter out stuff based on category. Else show default 3 products
 
         /*Fetch prices from DB and updates the prices on the website on load/refresh. */
         $query = "SELECT * from products";
@@ -56,6 +58,7 @@ if (isset($_GET['buy'])) {
         $product_src = array();
         $product_name = array();
         $product_price = array();
+        $product_quantity = array();
 
         for ($i = 0; $i < $result->num_rows; $i++) {
             $row = mysqli_fetch_assoc($result);
@@ -63,9 +66,7 @@ if (isset($_GET['buy'])) {
             $product_src[] = $row['product_img_path'];
             $product_name[] = $row['product_name'];
             $product_price[] = $row['product_price'];
-            // ${"product_src_" .$i} = $row['product_img_path']; //variable varaibles work but online say not reccommended to use it so use array instead
-            // ${"product_name_" .$i} = $row['product_name'];
-            // ${"product_price_" .$i} = $row['product_price'];
+            $product_quantity[] = $row['quantity'];
         }
     }
     ?>
@@ -111,52 +112,64 @@ if (isset($_GET['buy'])) {
             </div>
 
             <div class="productname">
-            <?php if (isset($product_name[0])) {
+                <?php if (isset($product_name[0])) {
                     echo "$product_name[0]";
                 } ?>
             </div>
             <div class="productname">
-            <?php if (isset($product_name[1])) {
+                <?php if (isset($product_name[1])) {
                     echo "$product_name[1]";
                 } ?>
             </div>
             <div class="productname">
-            <?php if (isset($product_name[2])) {
+                <?php if (isset($product_name[2])) {
                     echo "$product_name[2]";
                 } ?>
             </div>
 
             <div class="productprice">
-            <?php if (isset($product_price[0])) {
-                    echo "$product_price[0]";
+                <?php if (isset($product_price[0])) {
+                    echo "$$product_price[0]";
                 } ?>
             </div>
             <div class="productprice">
-            <?php if (isset($product_price[1])) {
-                    echo "$product_price[0]";
+                <?php if (isset($product_price[1])) {
+                    echo "$$product_price[1]";
                 } ?>
             </div>
             <div class="productprice">
-            <?php if (isset($product_price[2])) {
-                    echo "$product_price[0]";
+                <?php if (isset($product_price[2])) {
+                    echo "$$product_price[2]";
                 } ?>
             </div>
 
             <div class="addtocart">
-            <?php if (isset($product_id[0])) {
-                    echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[0] . "'>Buy</a>";
+                <?php if (isset($product_id[0])) {
+                    if ($product_quantity[0] <= 0) {
+                        echo "<a>Sold out</a>";
+                    } else {
+                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[0] . "'>Buy</a>";
+                    }
                 } ?>
             </div>
 
             <div class="addtocart">
             <?php if (isset($product_id[1])) {
-                    echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[1] . "'>Buy</a>";
+                    if ($product_quantity[1] <= 0) {
+                        echo "<a>Sold out</a>";
+                    } else {
+                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[1] . "'>Buy</a>";
+                    }
                 } ?>
             </div>
 
             <div class="addtocart">
             <?php if (isset($product_id[2])) {
-                    echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[2] . "'>Buy</a>";
+                    if ($product_quantity[2] <= 0) {
+                        echo "<a>Sold out</a>";
+                    } else {
+                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[2] . "'>Buy</a>";
+                    }
                 } ?>
             </div>
 
