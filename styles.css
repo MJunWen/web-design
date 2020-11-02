@@ -42,9 +42,14 @@ nav a {
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
     justify-items: center;
-    grid-template-rows: 4fr 1fr 1fr 1fr;
+    grid-template-rows: 4fr 1fr 1fr 1fr 1fr;
 
 }
+
+.pagenumber {
+    grid-column-start:2;
+}
+
 
 
 footer {
