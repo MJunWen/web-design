@@ -42,7 +42,7 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
     }
 
     $result = $db->query($query);
-    //need to define all these arrays so that no errors if its empty
+    //need to define all these arrays so that will have no errors if its empty
     $product_src = array();
     $product_name = array();
     $product_price = array();
