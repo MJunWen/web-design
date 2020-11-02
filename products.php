@@ -31,67 +31,53 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
     //If click on category, filter out stuff based on category. Else show default 3 products
 
     if (isset($_SESSION['category'])) {
-        $query = "SELECT * from products where category= '" . $_SESSION['category'] . "'";
-
-        $result = $db->query($query);
-
-        $product_src = array();
-        $product_name = array();
-        $product_price = array();
-        $product_quantity = array();
-
-        for ($i = 0; $i < $result->num_rows; $i++) {
-            $row = mysqli_fetch_assoc($result);
-            $product_id[] = $row['productid'];
-            $product_src[] = $row['product_img_path'];
-            $product_name[] = $row['product_name'];
-            $product_price[] = $row['product_price'];
-            $product_quantity[] = $row['quantity'];
-            // ${"product_src_" .$i} = $row['product_img_path']; //variable varaibles work but online say not reccommended to use it so use array instead
-            // ${"product_name_" .$i} = $row['product_name'];
-            // ${"product_price_" .$i} = $row['product_price'];
+        if ($_SESSION['category'] == "hot sales") {
+            $query = "SELECT products.productid,products.product_img_path,products.product_name,products.product_price,products.quantity, orders.productid,count(orders.productid) as total_sold  from orders, products where orders.productid=products.productid group by orders.productid order by total_sold desc";
+        } else {
+            $query = "SELECT * from products where category= '" . $_SESSION['category'] . "'";
         }
-    } else { //If click on category, filter out stuff based on category. Else show default 3 products
-
+    } else { //If click on category, filter out stuff based on category. Default just load everything
         /*Fetch prices from DB and updates the prices on the website on load/refresh. */
         $query = "SELECT * from products";
-
-        $result = $db->query($query);
-
-        $product_src = array();
-        $product_name = array();
-        $product_price = array();
-        $product_quantity = array();
-
-        for ($i = 0; $i < $result->num_rows; $i++) {
-            $row = mysqli_fetch_assoc($result);
-            $product_id[] = $row['productid'];
-            $product_src[] = $row['product_img_path'];
-            $product_name[] = $row['product_name'];
-            $product_price[] = $row['product_price'];
-            $product_quantity[] = $row['quantity'];
-        }
     }
-                $firstproductnumber = 0;
-                $secondproductnumber = 1;
-                $thirdproductnumber = 2;
+
+    $result = $db->query($query);
+
+    $product_src = array();
+    $product_name = array();
+    $product_price = array();
+    $product_quantity = array();
+
+    for ($i = 0; $i < $result->num_rows; $i++) {
+        $row = mysqli_fetch_assoc($result);
+        $product_id[] = $row['productid'];
+        $product_src[] = $row['product_img_path'];
+        $product_name[] = $row['product_name'];
+        $product_price[] = $row['product_price'];
+        $product_quantity[] = $row['quantity'];
+    }
+
+    //change page = change the index of array to display
+    $firstproductindex = 0;
+    $secondproductindex = 1;
+    $thirdproductindex = 2;
 
     if (isset($_GET['page'])) {
         switch ($_GET['page']) {
             case 1:
-                $firstproductnumber = 0;
-                $secondproductnumber = 1;
-                $thirdproductnumber = 2;
+                $firstproductindex = 0;
+                $secondproductindex = 1;
+                $thirdproductindex = 2;
                 break;
             case 2:
-                $firstproductnumber = 3;
-                $secondproductnumber = 4;
-                $thirdproductnumber = 5;
+                $firstproductindex = 3;
+                $secondproductindex = 4;
+                $thirdproductindex = 5;
                 break;
             case 3:
-                $firstproductnumber = 6;
-                $secondproductnumber = 7;
-                $thirdproductnumber = 8;
+                $firstproductindex = 6;
+                $secondproductindex = 7;
+                $thirdproductindex = 8;
                 break;
             default:
         }
@@ -113,6 +99,7 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
     </nav>
     <div class="wrapper">
         <div class="leftcolumn">
+            <a href="<?php echo $_SERVER['PHP_SELF']; ?>?product=hot sales">Hot sales</a></p>
             <a href="<?php echo $_SERVER['PHP_SELF']; ?>?product=keyboard">Keyboard</a></p>
             <a href="<?php echo $_SERVER['PHP_SELF']; ?>?product=Mouse">Mouse</a></p>
             <a href="<?php echo $_SERVER['PHP_SELF']; ?>?product=USB">USB</a></p>
@@ -123,88 +110,91 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
             <!--fill from left to right, down 1 row, left to right repeat-->
 
             <div class="productimg">
-                <?php if (isset($product_src[$firstproductnumber])) {
-                    echo "<img src='" . $product_src[$firstproductnumber] . "'>";
+                <?php if (isset($product_src[$firstproductindex])) {
+                    echo "<img src='" . $product_src[$firstproductindex] . "'>";
                 } ?>
             </div>
             <div class="productimg">
-                <?php if (isset($product_src[$secondproductnumber])) {
-                    echo "<img src='" . $product_src[$secondproductnumber] . "'>";
+                <?php if (isset($product_src[$secondproductindex])) {
+                    echo "<img src='" . $product_src[$secondproductindex] . "'>";
                 } ?>
             </div>
             <div class="productimg">
-                <?php if (isset($product_src[$thirdproductnumber])) {
-                    echo "<img src='" . $product_src[$thirdproductnumber] . "'>";
+                <?php if (isset($product_src[$thirdproductindex])) {
+                    echo "<img src='" . $product_src[$thirdproductindex] . "'>";
                 } ?>
             </div>
 
             <div class="productname">
-                <?php if (isset($product_name[$firstproductnumber])) {
-                    echo "$product_name[$firstproductnumber]";
+                <?php if (isset($product_name[$firstproductindex])) {
+                    echo "$product_name[$firstproductindex]";
                 } ?>
             </div>
             <div class="productname">
-                <?php if (isset($product_name[$secondproductnumber])) {
-                    echo "$product_name[$secondproductnumber]";
+                <?php if (isset($product_name[$secondproductindex])) {
+                    echo "$product_name[$secondproductindex]";
                 } ?>
             </div>
             <div class="productname">
-                <?php if (isset($product_name[$thirdproductnumber])) {
-                    echo "$product_name[$thirdproductnumber]";
+                <?php if (isset($product_name[$thirdproductindex])) {
+                    echo "$product_name[$thirdproductindex]";
                 } ?>
             </div>
 
             <div class="productprice">
-                <?php if (isset($product_price[$firstproductnumber])) {
-                    echo "$$product_price[$firstproductnumber]";
+                <?php if (isset($product_price[$firstproductindex])) {
+                    echo "$$product_price[$firstproductindex]";
                 } ?>
             </div>
             <div class="productprice">
-                <?php if (isset($product_price[$secondproductnumber])) {
-                    echo "$$product_price[$secondproductnumber]";
+                <?php if (isset($product_price[$secondproductindex])) {
+                    echo "$$product_price[$secondproductindex]";
                 } ?>
             </div>
             <div class="productprice">
-                <?php if (isset($product_price[$thirdproductnumber])) {
-                    echo "$$product_price[$thirdproductnumber]";
+                <?php if (isset($product_price[$thirdproductindex])) {
+                    echo "$$product_price[$thirdproductindex]";
                 } ?>
             </div>
 
             <div class="addtocart">
-                <?php if (isset($product_id[$firstproductnumber])) {
-                    if ($product_quantity[$firstproductnumber] <= 0) {
+                <?php if (isset($product_id[$firstproductindex])) {
+                    if ($product_quantity[$firstproductindex] <= 0) {
                         echo "<a>Sold out</a>";
                     } else {
-                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$firstproductnumber] . "'>Buy</a>";
+                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$firstproductindex] . "'>Buy</a><br>";
+                        echo "$product_quantity[$firstproductindex] remaining";
                     }
                 } ?>
             </div>
 
             <div class="addtocart">
-                <?php if (isset($product_id[$secondproductnumber])) {
-                    if ($product_quantity[$secondproductnumber] <= 0) {
+                <?php if (isset($product_id[$secondproductindex])) {
+                    if ($product_quantity[$secondproductindex] <= 0) {
                         echo "<a>Sold out</a>";
                     } else {
-                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$secondproductnumber] . "'>Buy</a>";
+                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$secondproductindex] . "'>Buy</a><br>";
+                        echo "$product_quantity[$secondproductindex] remaining";
                     }
                 } ?>
             </div>
 
             <div class="addtocart">
-                <?php if (isset($product_id[$thirdproductnumber])) {
-                    if ($product_quantity[$thirdproductnumber] <= 0) {
+                <?php if (isset($product_id[$thirdproductindex])) {
+                    if ($product_quantity[$thirdproductindex] <= 0) {
                         echo "<a>Sold out</a>";
                     } else {
-                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$thirdproductnumber] . "'>Buy</a>";
+                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$thirdproductindex] . "'>Buy</a><br>";
+                        echo "$product_quantity[$thirdproductindex] remaining";
                     }
                 } ?>
             </div>
 
             <div class="pagenumber">
                 <?php
-                 echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . 1 . "'>1</a>"; 
-                 echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . 2 . "'>2</a>";
-                 echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . 3 . "'>3</a>"; 
+                echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . 1 . "'>1</a>";
+                echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . 2 . "'>2</a>";
+                echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . 3 . "'>3</a>";
                 ?>
             </div>
 
