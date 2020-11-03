@@ -230,12 +230,6 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
                     $pagecount /= 3;
                     $i++;
                 }
-<<<<<<< HEAD
-=======
-                // for (;$pagecount>=0;$pagecount/=3) {
-                //     echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . $i . "'>1</a>";
-                // }
->>>>>>> 5afddac5a72a19c729e3e4f31bfcdc6156c7a55d
                 ?>
             </div>
 
