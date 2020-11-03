@@ -55,6 +55,7 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
         $product_name[] = $row['product_name'];
         $product_price[] = $row['product_price'];
         $product_quantity[] = $row['quantity'];
+        $product_quantity_assoc[$product_id[$i]] = $row['quantity'];
     }
 
     //change page = change the index of array to display
@@ -81,6 +82,14 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
                 break;
             default:
         }
+    }
+    $product_id_sold[] = array();
+    $product_id_quantity_sold[] = array();
+
+    $quantityarray = array_count_values($_SESSION['cart']); //cumulative quantity of item sold eg 4 => '5' , 1 => '3'
+    foreach ($quantityarray as $x => $x_value) {
+        $product_id_sold[] = $x; // Stores product id of all items sold in this array in ascending order
+        $product_id_quantity_sold[] = $x_value; // quantity of items sold based on product id
     }
     ?>
 
@@ -158,34 +167,61 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
             </div>
 
             <div class="addtocart">
-                <?php if (isset($product_id[$firstproductindex])) {
-                    if ($product_quantity[$firstproductindex] <= 0) {
-                        echo "<a>Sold out</a>";
-                    } else {
-                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$firstproductindex] . "'>Buy</a><br>";
-                        echo "$product_quantity[$firstproductindex] remaining";
+            <?php if (isset($product_id[$firstproductindex])) { //check if theres a product to show, else do nothing
+                    if ((isset($product_quantity_assoc[$product_id[$firstproductindex]]) && isset($quantityarray[$product_id[$firstproductindex]]))) { //check if the 2 arrays are set. If not set, will have error
+                        if (($product_quantity_assoc[$product_id[$firstproductindex]] - $quantityarray[$product_id[$firstproductindex]]) <= 0) { //if 2 arrays are set, check if quantity(db) - quantity(cart) <=0
+                            echo "<a>Sold out</a>";
+                        } else { //if 2 arrays set but quantity >0, show buy
+                            echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$firstproductindex] . "'>Buy</a><br>";
+                            echo "$product_quantity[$firstproductindex] remaining";
+                        }
+                    } else { //if 2 arrays not set, check quantity(db) if <=0)
+                        if (($product_quantity[$firstproductindex] <= 0)) {
+                            echo "<a>Sold out</a>";
+                        } else { //if 2 arrays not set, and quantity(db)>0, show buy
+                            echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$firstproductindex] . "'>Buy</a><br>";
+                            echo "$product_quantity[$firstproductindex] remaining";
+                        }
                     }
                 } ?>
             </div>
 
             <div class="addtocart">
-                <?php if (isset($product_id[$secondproductindex])) {
-                    if ($product_quantity[$secondproductindex] <= 0) {
-                        echo "<a>Sold out</a>";
+            <?php if (isset($product_id[$secondproductindex])) {
+                    if ((isset($product_quantity_assoc[$product_id[$secondproductindex]]) && isset($quantityarray[$product_id[$secondproductindex]]))) {
+                        if (($product_quantity_assoc[$product_id[$secondproductindex]] - $quantityarray[$product_id[$secondproductindex]]) <= 0) {
+                            echo "<a>Sold out</a>";
+                        } else {
+                            echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$secondproductindex] . "'>Buy</a><br>";
+                            echo "$product_quantity[$secondproductindex] remaining";
+                        }
                     } else {
-                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$secondproductindex] . "'>Buy</a><br>";
-                        echo "$product_quantity[$secondproductindex] remaining";
+                        if (($product_quantity[$secondproductindex] <= 0)) {
+                            echo "<a>Sold out</a>";
+                        } else {
+                            echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$secondproductindex] . "'>Buy</a><br>";
+                            echo "$product_quantity[$secondproductindex] remaining";
+                        }
                     }
                 } ?>
             </div>
 
             <div class="addtocart">
                 <?php if (isset($product_id[$thirdproductindex])) {
-                    if ($product_quantity[$thirdproductindex] <= 0) {
-                        echo "<a>Sold out</a>";
+                    if ((isset($product_quantity_assoc[$product_id[$thirdproductindex]]) && isset($quantityarray[$product_id[$thirdproductindex]]))) {
+                        if (($product_quantity_assoc[$product_id[$thirdproductindex]] - $quantityarray[$product_id[$thirdproductindex]]) <= 0) {
+                            echo "<a>Sold out</a>";
+                        } else {
+                            echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$thirdproductindex] . "'>Buy</a><br>";
+                            echo "$product_quantity[$thirdproductindex] remaining";
+                        }
                     } else {
-                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$thirdproductindex] . "'>Buy</a><br>";
-                        echo "$product_quantity[$thirdproductindex] remaining";
+                        if (($product_quantity[$thirdproductindex] <= 0)) {
+                            echo "<a>Sold out</a>";
+                        } else {
+                            echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$thirdproductindex] . "'>Buy</a><br>";
+                            echo "$product_quantity[$thirdproductindex] remaining";
+                        }
                     }
                 } ?>
             </div>
