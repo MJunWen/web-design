@@ -223,9 +223,13 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
 
             <div class="pagenumber">
                 <?php
-                echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . 1 . "'>1</a>";
-                echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . 2 . "'>2</a>";
-                echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . 3 . "'>3</a>";
+                $pagecount = count($product_id);
+                $i=1;
+                while ($pagecount % 3 != 0) {
+                    echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . $i . "'>$i</a>";
+                    $pagecount /= 3;
+                    $i++;
+                }
                 ?>
             </div>
 
