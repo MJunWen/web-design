@@ -55,7 +55,7 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
         $product_name[] = $row['product_name'];
         $product_price[] = $row['product_price'];
         $product_quantity[] = $row['quantity'];
-        $product_quantity_assoc[$product_id[$i]] = $row['quantity']; //make an associative array of key = productid, value = quantity so that can get quantity based on product id 
+        $product_quantity_assoc[$product_id[$i]] = $row['quantity']; //make an associative array of key = productid, value = quantity so can get quantity based on product id 
     }
 
     //change page = change the index of array to display
