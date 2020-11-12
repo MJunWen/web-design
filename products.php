@@ -1,5 +1,7 @@
 <?php //catalog.php
 session_start();
+/*Connect to DB */
+require_once('connection.php');
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = array();
 }
@@ -11,6 +13,13 @@ if (isset($_GET['buy'])) {
 if (isset($_GET['product'])) { //put category into session so can change page while keeping the same category
     $_SESSION['category'] = $_GET['product'];
 }
+
+if(isset($_POST['submit'])){
+    $search = mysqli_real_escape_string($db, $_POST['search']);
+    $_SESSION['search'] = $search;
+    unset($_SESSION['category']);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -25,9 +34,6 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
 <body>
 
     <?php
-    /*Connect to DB */
-    require_once('connection.php');
-
     //If click on category, filter out stuff based on category. Else show default 3 products
 
     if (isset($_SESSION['category'])) {
@@ -36,13 +42,20 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
         } else {
             $query = "SELECT * from products where category= '" . $_SESSION['category'] . "'";
         }
+    } else if ((isset($_SESSION['search']))) {
+            $search = $_SESSION['search'];
+            $query = "SELECT * FROM products WHERE product_name LIKE '%$search%' OR product_price LIKE '%$search%'"; 
     } else { //If click on category, filter out stuff based on category. Default just load everything
         /*Fetch prices from DB and updates the prices on the website on load/refresh. */
         $query = "SELECT * from products";
     }
 
+    
+
+
     $result = $db->query($query);
     //need to define all these arrays so that will have no errors if its empty
+    $product_id = array();
     $product_src = array();
     $product_name = array();
     $product_price = array();
@@ -55,7 +68,9 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
         $product_name[] = $row['product_name'];
         $product_price[] = $row['product_price'];
         $product_quantity[] = $row['quantity'];
+        $product_quantity_assoc[$product_id[$i]] = $row['quantity']; //make an associative array of key = productid, value = quantity so can get quantity based on product id 
     }
+
 
     //change page = change the index of array to display
     $firstproductindex = 0;
@@ -82,21 +97,39 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
             default:
         }
     }
+    
+    //cumulative quantity of items in cart eg productid 4 has 5 quantity sold,  4 => '5' ,productid 1 has 3 quantity sold, 1 => '3'
+    $quantityarray = array_count_values($_SESSION['cart']); //store in assoc array with key=productid value=count(productid)
     ?>
 
-
-    <header>
-        <h1 align="center" ;>IT Shop</h1>
-    </header>
     <nav>
+    <div class="logo">
         <a href="index.html">ShopIT</a>
-        <a href="products.php">Products</a>
-        <a href="aboutus.html">About Us</a>
-        <a href="contactus.html">Contact Us</a>
-        <a href="cart.php">Cart <?php
-                                echo count($_SESSION['cart']); ?> items.</a>
-        <a href="login.php">Login</a>
-    </nav>
+    </div>
+    <ul class="nav-links">
+        <li>
+            <a href="products.php">Products</a>
+        </li>
+        <li>
+            <a href="aboutus.html">About Us</a>
+        </li>
+        <li>
+            <a href="contactus.php">Contact Us</a>
+        </li>
+        <li>
+            <a href="cart.php">Cart <?php
+                                if (isset($_SESSION['cart'])) {
+                                    echo count($_SESSION['cart']);
+                                } else{
+                                    echo 0;
+                                }
+                                 ?> items</a>
+        </li>
+        <li>
+            <a href="login.php">Login</a>
+        </li>
+    </ul>
+</nav>
     <div class="wrapper">
         <div class="leftcolumn">
             <a href="<?php echo $_SERVER['PHP_SELF']; ?>?product=hot sales">Hot sales</a></p>
@@ -158,52 +191,126 @@ if (isset($_GET['product'])) { //put category into session so can change page wh
             </div>
 
             <div class="addtocart">
-                <?php if (isset($product_id[$firstproductindex])) {
-                    if ($product_quantity[$firstproductindex] <= 0) {
-                        echo "<a>Sold out</a>";
-                    } else {
-                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$firstproductindex] . "'>Buy</a><br>";
-                        echo "$product_quantity[$firstproductindex] remaining";
+            <?php if (isset($product_id[$firstproductindex])) { //check if theres a product to show, else do nothing
+                    if ((isset($product_quantity_assoc[$product_id[$firstproductindex]]) && isset($quantityarray[$product_id[$firstproductindex]]))) { //check if the 2 arrays are set. If not set, will have error
+                        if (($product_quantity_assoc[$product_id[$firstproductindex]] - $quantityarray[$product_id[$firstproductindex]]) <= 0) { //if 2 arrays are set, check if quantity(db) - quantity(cart) <=0
+                            echo "<a>Sold out</a>";
+                        } else { //if 2 arrays set but quantity >0, show buy
+                            ?>
+                            <div class="remaining">
+                            <?php
+                            echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$firstproductindex] . "'>Buy</a><br>";
+                            $remaining1 = ($product_quantity_assoc[$product_id[$firstproductindex]] - $quantityarray[$product_id[$firstproductindex]]);
+                            echo "$remaining1 remain";
+                            ?>
+                            </div>
+                            <?php
+                        }
+                    } else { //if 2 arrays not set, check quantity(db) if <=0)
+                        if (($product_quantity[$firstproductindex] <= 0)) {
+                            echo "<a>Sold out</a>";
+                        } else { //if 2 arrays not set, and quantity(db)>0, show buy
+                            ?>
+                            <div class="remaining">
+                            <?php
+                            echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$firstproductindex] . "'>Buy</a><br>";
+                            echo "$product_quantity[$firstproductindex] remain";
+                            ?>
+                            </div>
+                            <?php
+                        }
                     }
                 } ?>
             </div>
 
             <div class="addtocart">
-                <?php if (isset($product_id[$secondproductindex])) {
-                    if ($product_quantity[$secondproductindex] <= 0) {
-                        echo "<a>Sold out</a>";
+            <?php if (isset($product_id[$secondproductindex])) {
+                    if ((isset($product_quantity_assoc[$product_id[$secondproductindex]]) && isset($quantityarray[$product_id[$secondproductindex]]))) {
+                        if (($product_quantity_assoc[$product_id[$secondproductindex]] - $quantityarray[$product_id[$secondproductindex]]) <= 0) {
+                            echo "<a>Sold out</a>";
+                        } else {
+                            ?>
+                            <div class="remaining">
+                            <?php
+                            echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$secondproductindex] . "'>Buy</a><br>";
+                            $remaining2 = ($product_quantity_assoc[$product_id[$secondproductindex]] - $quantityarray[$product_id[$secondproductindex]]);
+                            echo "$remaining2 remain";
+                            ?>
+                            </div>
+                            <?php
+                        }
                     } else {
-                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$secondproductindex] . "'>Buy</a><br>";
-                        echo "$product_quantity[$secondproductindex] remaining";
+                        if (($product_quantity[$secondproductindex] <= 0)) {
+                            echo "<a>Sold out</a>";
+                        } else {
+                            ?>
+                            <div class="remaining">
+                            <?php
+                            echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$secondproductindex] . "'>Buy</a><br>";
+                            echo "$product_quantity[$secondproductindex] remain";
+                            ?>
+                            </div>
+                            <?php
+                        }
                     }
                 } ?>
             </div>
 
             <div class="addtocart">
                 <?php if (isset($product_id[$thirdproductindex])) {
-                    if ($product_quantity[$thirdproductindex] <= 0) {
-                        echo "<a>Sold out</a>";
+                    if ((isset($product_quantity_assoc[$product_id[$thirdproductindex]]) && isset($quantityarray[$product_id[$thirdproductindex]]))) {
+                        if (($product_quantity_assoc[$product_id[$thirdproductindex]] - $quantityarray[$product_id[$thirdproductindex]]) <= 0) {
+                            echo "<a>Sold out</a>";
+                        } else {
+                            ?>
+                            <div class="remaining">
+                            <?php
+                            echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$thirdproductindex] . "'>Buy</a><br>";
+                            $remaining3 = ($product_quantity_assoc[$product_id[$thirdproductindex]] - $quantityarray[$product_id[$thirdproductindex]]);
+                            echo "$remaining3 remain";
+                            ?>
+                            </div>
+                            <?php
+                        }
                     } else {
-                        echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$thirdproductindex] . "'>Buy</a><br>";
-                        echo "$product_quantity[$thirdproductindex] remaining";
+                        if (($product_quantity[$thirdproductindex] <= 0)) {
+                            echo "<a>Sold out</a>";
+                        } else {
+                            ?>
+                            <div class="remaining">
+                            <?php
+                            echo " <a href='" . $_SERVER['PHP_SELF'] . '?buy=' . $product_id[$thirdproductindex] . "'>Buy</a><br>";
+                            echo "$product_quantity[$thirdproductindex] remain";
+                            ?>
+                            </div>
+                            <?php
+                        }
                     }
                 } ?>
             </div>
 
             <div class="pagenumber">
                 <?php
-                echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . 1 . "'>1</a>";
-                echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . 2 . "'>2</a>";
-                echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . 3 . "'>3</a>";
+                $pagecount = (int)count($product_id);
+                $i=1;
+                while ($pagecount % 3 != 0) {
+                    echo " <a href='" . $_SERVER['PHP_SELF'] . '?page=' . $i . "'>$i</a>";
+                    global $pagecount;
+                    $pagecount = $pagecount - 3;
+                    $i++;
+                    if ($pagecount <=0) {
+                        $pagecount=0;
+                    }
+                }
                 ?>
             </div>
 
         </div>
     </div>
     <footer>
-        <small><i>Copyright &copy; 2014 JavaJam Coffee House<br><a href="mailto:zhengying@ong.com">zhengying@ong.com</a>
-            </i></small>
-    </footer>
+    <small><i>Copyright &copy; 2020 SHOPIT<br><a href="mailto:zhengying@ong.com">zhengying@ong.com</a>
+        </i></small>
+</footer>
 </body>
 
 </html>

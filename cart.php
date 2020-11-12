@@ -11,17 +11,28 @@ if (isset($_GET['empty'])) {
 ?>
 <html>
 <link rel="stylesheet" href="styles.css">
-<header>
-    <h1 align="center" ;>IT Shop</h1>
-</header>
 <nav>
-    <a href="index.html">ShopIT</a>
-    <a href="products.php">Products</a>
-    <a href="aboutus.html">About Us</a>
-    <a href="contactus.html">Contact Us</a>
-    <a href="cart.php">Cart <?php
-                            echo count($_SESSION['cart']); ?> items.</a>
-    <a href="login.php">Login</a>
+    <div class="logo">
+        <a href="index.html">ShopIT</a>
+    </div>
+    <ul class="nav-links">
+        <li>
+            <a href="products.php">Products</a>
+        </li>
+        <li>
+            <a href="aboutus.html">About Us</a>
+        </li>
+        <li>
+            <a href="contactus.php">Contact Us</a>
+        </li>
+        <li>
+            <a href="cart.php">Cart <?php
+                                echo count($_SESSION['cart']); ?> items</a>
+        </li>
+        <li>
+            <a href="login.php">Login</a>
+        </li>
+    </ul>
 </nav>
 
 <body>
@@ -82,11 +93,14 @@ if (isset($_GET['empty'])) {
     
     $db->close();
     ?>
-    <h1 align="center">Your Shopping Cart </h1>
+
     <div class="wrappercart" align="center">
 
-        <table border="1">
+        <table id="contentcolor" border="1">
             <thead>
+                <tr>
+                    <th colspan="3">Your Shopping Cart</th>
+                </tr>
                 <tr>
                     <th>Item Description</th>
                     <th>Quantity</th>
@@ -117,12 +131,13 @@ if (isset($_GET['empty'])) {
                 </tr>
             </tfoot>
         </table>
-        <p><a href="products.php">Continue Shopping</a> or
+        <div class="checkout">
+        <p><a href="products.php">Continue Shopping /</a> 
             <a href="<?php echo $_SERVER['PHP_SELF']; ?>?empty=1">Empty your cart</a></p>
-
+        </div>
         <p>
             <form method="post" id="checkout" action="checkout.php">
-                <input type="submit" name="dollarsales" class="button" value="Checkout" style="display:inline;" />
+                <input class="search-btn" type="submit" name="dollarsales" class="button" value="Checkout" style="display:inline;" />
             </form>
         </p>
 
@@ -131,7 +146,7 @@ if (isset($_GET['empty'])) {
 </body>
 
 <footer>
-    <small><i>Copyright &copy; 2014 JavaJam Coffee House<br><a href="mailto:zhengying@ong.com">zhengying@ong.com</a>
+    <small><i>Copyright &copy; 2020 SHOPIT<br><a href="mailto:zhengying@ong.com">zhengying@ong.com</a>
         </i></small>
 </footer>
 
