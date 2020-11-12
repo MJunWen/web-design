@@ -1,7 +1,7 @@
 create table login (
     loginid int unsigned not null auto_increment primary key,
-    username varchar(50) not null,
-    password varchar(50) not null
+    user varchar(50) not null,
+    pass varchar(50) not null
 );
 create table products (
     productid int unsigned not null auto_increment primary key,

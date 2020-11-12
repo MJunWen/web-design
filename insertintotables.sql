@@ -1,11 +1,8 @@
 use f37ee;
-insert into login
-values (1, "admin", "admin"),
-  (2, "test", "test");
 insert into products
 values (
     1,
-    "img/keyboardone.JPG",
+    "img/keyboardone.jpg",
     "Lorem ipsum dolor sit amet Keyboard1.",
     1.23,
     "Keyboard",
@@ -13,7 +10,7 @@ values (
   ),
   (
     2,
-    "img/keyboardtwo.JPG",
+    "img/keyboardtwo.jpg",
     "Lorem ipsum dolor sit amet Keyboard2.",
     11.12,
     "Keyboard",
@@ -21,7 +18,7 @@ values (
   ),
   (
     3,
-    "img/keyboardthree.JPG",
+    "img/keyboardthree.jpg",
     "Lorem ipsum dolor sit amet Keyboard3.",
     11.13,
     "Keyboard",
@@ -29,7 +26,7 @@ values (
   ),
   (
     4,
-    "img/keyboardfour.JPG",
+    "img/keyboardfour.jpg",
     "Lorem ipsum dolor sit amet Keyboard4.",
     11.14,
     "keyboard",
@@ -37,7 +34,7 @@ values (
   ),
   (
     5,
-    "img/keyboardfive.JPG",
+    "img/keyboardfive.jpg",
     "Lorem ipsum dolor sit amet Keyboard5.",
     11.15,
     "Keyboard",
@@ -45,7 +42,7 @@ values (
   ),
   (
     6,
-    "img/mouseone.JPG",
+    "img/mouseone.jpg",
     "Lorem ipsum dolor sit amet Mouse.",
     4.56,
     "Mouse",
@@ -54,7 +51,7 @@ values (
   
   (
     7,
-    "img/usbone.JPG",
+    "img/usbone.jpg",
     "Lorem ipsum dolor sit amet USB.",
     7.89,
     "USB",
@@ -62,7 +59,7 @@ values (
   ),
   (
     8,
-    "img/mobilephoneone.JPG",
+    "img/mobilephoneone.jpg",
     "Lorem ipsum dolor sit amet phone.",
     4.98,
     "Mobile Phone",

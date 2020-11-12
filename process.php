@@ -1,27 +1,28 @@
 <?php
 require_once('connection.php');
 session_start();
+
   if(isset($_POST['login']))
   {
-    if(empty($_POST['myUsername']) || empty($_POST['myPassword']))
-    {
-      header("location:login.php?Empty= Please fill in the blanks");
-    }
-    else
-    {
-      $query="select * from login where username='".$_POST['myUsername']."' and password='".$_POST['myPassword']."'";
+      $username=$_POST['myUsername'];
+      $password=$_POST['myPassword'];
+      $password = md5($password);
+      $query="select * from login where user='$username' and pass='$password'";
       $result=mysqli_query($db,$query);
       
       if(mysqli_fetch_assoc($result))
       {
-        $_SESSION['User']=$_POST['myUsername'];
-        header("location:login.php");
+        $_SESSION['User']=$username;
+        header("location:member.php"); //direct to welcome page if logged in successfully
       }
       else
       {
-        header("location:login.php?Invalid= Please enter correct username and passward");
+        echo '<script type="text/javascript">'; 
+        echo 'alert("Please enter correct username and password!");'; 
+        echo 'window.location.href = "login.php";';
+        echo '</script>';
       }
-    }
+    
   }
   else
   {

@@ -5,19 +5,6 @@ header h1 {
     margin-top:0px;
 }
 
-nav {
-    display:grid;
-    grid-template-columns: repeat(6,1fr);
-    column-gap:1em;
-    padding:10px;
-    grid-auto-columns: auto;
-}
-
-nav a { 
-    text-decoration: none;
-    border:1px solid black;
-}
-
 .wrapper {
     display:grid;
     grid-template-columns: 1fr 6fr;
@@ -25,19 +12,27 @@ nav a {
 }
 
 .leftcolumn {
-    background-color:aqua;
+    background-color: none;
     display:grid;
-    grid-template-rows: repeat(5, 1fr);
     row-gap: 1em;
+    justify-content: space-around;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .leftcolumn a {
-    border:1px;
-    border-style:solid;
+    border-style:none;
+    color: #68829E;
+    text-decoration: none;
+    letter-spacing: 2px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 20%;
+    margin-bottom: 20%;
 }
 
 .rightcolumn {
-    background-color:antiquewhite;
+    background-color:#dfe7e8;
     display:grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
@@ -53,7 +48,7 @@ nav a {
 
 
 footer {
-    background-color:aquamarine;
+    background-color:#68829E;
 }
 
 .wrapperindex {
@@ -70,3 +65,257 @@ footer {
     max-width:100px;
 }
 
+.productname {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #68829E;
+    text-decoration: none;
+    letter-spacing: 1px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.productprice {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #68829E;
+    text-decoration: none;
+    letter-spacing: 1px;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.addtocart a{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #68829E;
+    text-decoration: none;
+    letter-spacing: 1px;
+    font-weight: bold;
+    font-size: 14px;
+    border-style: solid; 
+    border-width: 1.5px;
+    padding: 10px;
+    padding-bottom: 20px;
+    padding-left:20px;
+    padding-right:20px;
+    
+}
+
+.remaining {
+    margin-top: 10%;
+    color: #68829E;
+    margin: auto;
+}
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(226, 226, 226);
+}
+
+/*Nav bar*/
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 8vh;
+    background-color: #68829E;
+    font-family: Arial, Helvetica, sans-serif;
+    
+}
+
+.logo {
+    color: rgb(226, 226, 226);
+    text-transform: uppercase;
+    letter-spacing: 5px; 
+    font-size: 20px;
+}
+
+.logo a {
+    text-decoration: none;
+    color: rgb(226, 226, 226);
+}
+
+.nav-links {
+    display: flex;   
+    justify-content: space-around;
+    width: 70%;
+}
+
+.nav-links li{
+    list-style: none;
+    margin-right: 10px;
+}
+
+.nav-links a{
+    color: rgb(226, 226, 226);
+    text-decoration: none;
+    letter-spacing: 3px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/*searchbar*/
+
+.search-box{
+    margin:20%;
+    background-color: #68829E;
+    height: 40px;
+    border-radius: 40px;
+    padding: 10px;
+}
+
+
+.search-btn {
+    margin-top: 20px;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+	background-color:#ffffff;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
+}
+.search-btn:hover {
+	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	background-color:#f6f6f6;
+}
+.search-btn:active {
+	position:relative;
+	top:1px;
+}
+
+.search-txt{
+    border: none;
+    background: none;
+    outline: none;
+
+    color: rgb(226, 226, 226);
+    padding: 0;
+    font-size: 18px;
+    line-height: 20px;
+    width: 700px;
+}
+
+::placeholder{ 
+    color: rgb(226, 226, 226);
+    opacity: 1;
+}
+
+.wrapperindex2 {
+    display:grid;
+    grid-template-columns: 1fr;
+}
+
+/*forms*/
+
+.formstyle{
+	font-family: Arial, Helvetica, sans-serif;
+	width: 500px;
+	padding: 30px;
+	background: #FFFFFF;
+	margin: 50px auto;
+	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+}
+.formstyle h2{
+	background: #4D4D4D;
+	text-transform: uppercase;
+	font-family: Arial, Helvetica, sans-serif;
+	color: rgb(226, 226, 226);
+	font-size: 18px;
+	font-weight: 100;
+	padding: 20px;
+	margin: -30px -30px 30px -30px;
+}
+
+.formstyle textarea,
+.formstyle input[type="text"],
+.formstyle select 
+{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	outline: none;
+	display: block;
+	width: 100%;
+	padding: 7px;
+	border: none;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	margin-bottom: 10px;
+	font: 16px Arial, Helvetica, sans-serif;
+	height: 45px;
+}
+.formstyle textarea{  /*Prevent changing size of textbox*/
+	resize:none;
+	overflow: hidden;
+}
+
+/*Table styling*/
+
+#contentcolor { color: rgb(226, 226, 226);
+    font-size: 100%;
+    display: inline;
+    margin: 0px 10px 0px 0px;
+}
+
+table { margin: auto; border-style: none; max-width: 900px; border-spacing: 0;}
+td, th { padding: 5px; font-family: Arial, sans-serif; border: 1px solid rgb(226, 226, 226);}
+tr:nth-of-type(odd) { background-color:#68829E; }
+tr:nth-of-type(even) { background-color:#68829E; }
+.centertable { text-align: center;
+    font-weight: bold; }
+
+.checkout {
+    margin-top: 20px;
+}
+.checkout a{
+    color: rgb(59, 59, 59);
+    text-decoration: none;
+    letter-spacing: 2px;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/*footer*/
+
+footer a{
+    color: rgb(226, 226, 226);
+    text-decoration: none;
+    letter-spacing: 1px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+footer {
+    color: rgb(226, 226, 226);
+    text-decoration: none;
+    font-size: 16px;
+    letter-spacing: 3px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 10px;
+    text-align: center;
+}
+
+/*aboutus*/
+
+.aboutus {
+    padding: 100px;
+    color: rgb(59, 59, 59);
+    text-decoration: none;
+    letter-spacing: 2px;
+    font-weight: bold;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+}

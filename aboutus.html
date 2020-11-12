@@ -1,0 +1,51 @@
+<html>
+<link rel="stylesheet" href="styles.css">
+
+<nav>
+    <div class="logo">
+        <a href="index.html">ShopIT</a>
+    </div>
+    <ul class="nav-links">
+        <li>
+            <a href="products.php">Products</a>
+        </li>
+        <li>
+            <a href="aboutus.html">About Us</a>
+        </li>
+        <li>
+            <a href="contactus.php">Contact Us</a>
+        </li>
+        <li>
+            <a href="cart.php">Cart <?php
+                                echo count($_SESSION['cart']); ?> items</a>
+        </li>
+        <li>
+            <a href="login.php">Login</a>
+        </li>
+    </ul>
+</nav>
+
+<body>
+ 
+<div class="wrapperindex" align="center" justify="center">
+    <p class="aboutus">
+        This website sells various types of electronics.
+        It allows consumers to browse through different types of electronics that
+        we are selling and users can select individual products to view the details 
+        of the product. The website has a shopping cart added so that users can purchase 
+        multiple products in one transaction. Users can also track what they have added to 
+        the shopping cart so far and the total price of the goods they have added to the 
+        shopping cart. There is also a payment system that can consider actions to take if 
+        the payment is successful or unsuccessful. If the payment is successful, the 
+        website acknowledges the order and updates the customer on the status of the order via email.
+    </p>
+</div>	
+
+</body>
+
+<footer>
+    <small><i>Copyright &copy; 2020 SHOPIT<br><a href="mailto:zhengying@ong.com">zhengying@ong.com</a>
+        </i></small>
+</footer>
+
+</html>

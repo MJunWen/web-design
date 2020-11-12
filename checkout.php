@@ -11,24 +11,40 @@ if (isset($_GET['empty'])) {
 ?>
 <html>
 <link rel="stylesheet" href="styles.css">
-<header>
-    <h1 align="center" ;>IT Shop</h1>
-</header>
+
 <nav>
-    <a href="index.html">ShopIT</a>
-    <a href="products.php">Products</a>
-    <a href="aboutus.html">About Us</a>
-    <a href="contactus.html">Contact Us</a>
-    <a href="cart.php">Cart <?php
-                            echo count($_SESSION['cart']); ?> items.</a>
-    <a href="login.php">Login</a>
+    <div class="logo">
+        <a href="index.html">ShopIT</a>
+    </div>
+    <ul class="nav-links">
+        <li>
+            <a href="products.php">Products</a>
+        </li>
+        <li>
+            <a href="aboutus.html">About Us</a>
+        </li>
+        <li>
+            <a href="contactus.php">Contact Us</a>
+        </li>
+        <li>
+            <a href="cart.php">Cart <?php
+                                echo count($_SESSION['cart']); ?> items</a>
+        </li>
+        <li>
+            <a href="login.php">Login</a>
+        </li>
+    </ul>
 </nav>
 
 <body>
     <?php
 
     if (!isset($_SESSION['User'])) {
-        echo "Please login before ordering"; //if no session login then dont allow ordering
+        //if no session login then dont allow ordering
+        echo '<script type="text/javascript">'; 
+        echo 'alert("Please login before ordering!");'; 
+        echo 'window.location.href = "login.php";';
+        echo '</script>';
     } else {
 
    
@@ -67,7 +83,7 @@ if (isset($_GET['empty'])) {
     $result = $db->query($query);
     for ($i = 0; $i < $result->num_rows; $i++) {
         $row = mysqli_fetch_assoc($result);
-        if ($_SESSION['User'] == $row['username']) {
+        if ($_SESSION['User'] == $row['user']) {
             $login_id = $row['loginid'];
         }
     }
@@ -113,7 +129,7 @@ if (isset($_GET['empty'])) {
 </body>
 
 <footer>
-    <small><i>Copyright &copy; 2014 JavaJam Coffee House<br><a href="mailto:zhengying@ong.com">zhengying@ong.com</a>
+    <small><i>Copyright &copy; 2020 SHOPIT<br><a href="mailto:zhengying@ong.com">zhengying@ong.com</a>
         </i></small>
 </footer>
 
