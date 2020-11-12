@@ -2,6 +2,9 @@
 <link rel="stylesheet" href="styles.css">
 <script type = "text/javascript" src = "checkSubmission.js"></script>
 <script type = "text/javascript" src = "textarea.js"></script>
+<?php 
+session_start();
+?>
 <nav>
     <div class="logo">
         <a href="index.html">ShopIT</a>
@@ -16,10 +19,13 @@
         <li>
             <a href="contactus.php">Contact Us</a>
         </li>
-        <li>
-            <a href="cart.php">Cart <?php
-                                echo count($_SESSION['cart']); ?> items</a>
-        </li>
+        <a href="cart.php">Cart <?php
+                                if (isset($_SESSION['cart'])) {
+                                    echo count($_SESSION['cart']);
+                                } else{
+                                    echo 0;
+                                }
+                                 ?> items</a>
         <li>
             <a href="login.php">Login</a>
         </li>
