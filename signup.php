@@ -69,11 +69,8 @@ if (isset($_POST['signup'])){
 			  <input type="password" name="newPass" id="newPass" placeholder="Password">
               
               <input type="password" name="newPass2" id="newPass2" placeholder="Re-enter Password">
-<<<<<<< HEAD
 
               <input type="email" name="myEmail" id="myEmail" placeholder="Email" required>
-=======
->>>>>>> e88572dbed14185309dbb5535d25c8c3bf152bea
               
 			  <br>
 			  <input name="signup" id="signup" type="submit" value="Register">
@@ -81,8 +78,5 @@ if (isset($_POST['signup'])){
 </div>
 
 </body>
-<<<<<<< HEAD
 <script type = "text/javascript" src = "checkSubmission2.js"></script>
-=======
->>>>>>> e88572dbed14185309dbb5535d25c8c3bf152bea
 </html>
