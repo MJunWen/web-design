@@ -1,6 +1,6 @@
 <?php //catalog.php
 session_start();
-/*Connect to DB */
+/*Connect to DB */ // test
 require_once('connection.php');
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = array();
